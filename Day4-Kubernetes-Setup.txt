@@ -1,0 +1,21 @@
+Setup Instructions:
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+
+Download"
+https://github-production-release-asset-2e65be.s3.amazonaws.com/56353740/6ee87680-537c-11ea-9052-7ddf2e1c18f0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20200227%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200227T025239Z&X-Amz-Expires=300&X-Amz-Signature=b7d19a0dc58776a44e502918b9b7ea9c5d599aee7f65022d4958e84047d71984&X-Amz-SignedHeaders=host&actor_id=3568735&response-content-disposition=attachment%3B%20filename%3Dminikube-installer.exe&response-content-type=application%2Foctet-stream
+https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/windows/amd64/kubectl.exe
+https://download.virtualbox.org/virtualbox/6.1.4/VirtualBox-6.1.4-136177-Win.exe
+
+Check if Virtualization is there:
+goto command prompt and admin and type:
+systeminfo
+
+# Should show Yes in all
+copy kubectl.exe c:\kubernetes
+set path=%path%;c:\kubernetes;"C:\Program Files\Kubernetes\Minikube\minikube.exe"
+
+minikube start --vm-driver=virtualbox
+minikube status
+minikube stop
+
+

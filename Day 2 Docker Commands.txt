@@ -1,0 +1,158 @@
+#Use the default bridge network
+docker network ls
+docker run -dit --name alpine1 alpine ash
+docker run -dit --name alpine2 alpine ash
+docker network inspect bridge
+docker attach alpine1
+ip addr show
+ping google.com
+ping -c 2 172.17.0.3
+ping -c 2 alpine2
+docker stop alpine1; docker rm alpine1
+docker stop alpine2; docker rm alpine2
+
+docker network create --driver bridge u1-alpine-net
+docker network ls
+docker network inspect u1-alpine-net
+#Now lets create 4 containers and attach those to the network
+docker run -dit --name u1-alpine1 --network u1-alpine-net alpine ash
+docker run -dit --name u1-alpine2 --network u1-alpine-net alpine ash
+docker run -dit --name u1-alpine3 alpine ash	# Will be connected to bridge
+docker run -dit --name u1-alpine4 --network u1-alpine-net alpine ash
+docker network connect bridge u1-alpine4            # Connected to 2 networks
+docker container ls # docker ps
+docker network inspect bridge
+docker network inspect u1-alpine-net
+
+#Finally Stop and remove all containers and the alpine-net network.
+docker container stop alpine1 alpine2 alpine3 alpine4
+docker container rm alpine1 alpine2 alpine3 alpine4
+docker network rm alpine-net
+
+#Networking using the host network
+docker run --rm -d --network host --name my_nginx nginx
+curl localhost:80
+sudo netstat -tulpn | grep :80
+
+#Verify which process is bound to port 80, using the netstat command
+sudo docker container stop my_nginx
+
+
+# Create Dockerized Application 
+
+#This is a basic Dockerfile we need to dockerize a node application
+FROM node:4-onbuild
+RUN mkdir /app
+COPY . /app/
+WORKDIR /app
+RUN npm install
+EXPOSE 8234
+CMD [ "npm", "start" ]
+
+
+
+# Build Image
+#Now once we have our Dockerfile ready lets build an image out of it.
+
+#Navigate to directory containing Dockerfile.
+#Run the following command on your terminal:-
+docker build -t myimage .
+docker images
+docker run -p 8234:8234 'your image name'
+
+
+# Publish Port
+docker run –t –p 8080:80 ubuntu
+Map container port 80 to host port 8080
+
+
+# Docker Hub Use my own registry
+#To pull from your own registry, substitute the host and port to your own:
+docker login localhost:8080
+docker pull localhost:8080/test-image
+
+
+# Resource Usage
+docker top [container id]
+docker stats [container id]
+docker inspect [container id]
+
+docker stats –all
+
+
+# Clean Up - Danger - use with caution
+#docker stop $(docker ps -a -q) #stop ALL containers
+#docker rm -f $(docker ps -a -q) # remove ALL containers
+
+
+#Advanced Docker commands
+#Saving image to tar archives
+docker save alpine > alpine.tar
+docker save --output alpine.tar alpine
+
+docker search textbox
+
+#Displaying resource usage statistics
+docker stats <containerid>
+
+docker system df
+docker system events
+docker system info
+docker system prune
+
+docker tag 0e5574283393 fedora/httpd:version1.0
+docker logout
+docker version
+
+docker container inspect my_container 
+
+docker container logs my_container
+
+#— Stop one or more running containers abruptly. 
+#It’s like pulling the plug on the TV. 
+#Prefer stop in most situations.
+docker container kill my_container 
+
+#— Kill all running containers
+docker container kill $(docker ps -q) 
+
+#— Delete one or more containers.
+docker container rm my_container 
+
+#— Delete all containers that are not running. use with caution
+#docker container rm $(docker ps -a -q) 
+
+#— Delete all images. use with caution
+#docker image rm $(docker images -a -q) 
+
+
+
+#Create and manage volumes
+docker volume create my-vol
+docker volume ls
+docker volume inspect my-vol
+docker volume rm my-vol
+
+
+#Start a container with a volume
+
+#mounts the volume myvol2 into /app/ in the container
+docker run -d   --name devtest   -v myvol2:/app   nginx:latest
+
+#To verify that the volume was created and mounted correctly.
+docker inspect devtest
+
+docker container stop devtest
+docker container rm devtest
+docker volume rm myvol2
+
+
+#Use a read-only volume
+docker run -d  --name=nginxtest -v nginx-vol:/usr/share/nginx/html:ro   nginx:latest
+docker inspect nginx
+
+docker container stop nginxtest
+docker container rm nginxtest
+docker volume rm nginx-vol
+
+

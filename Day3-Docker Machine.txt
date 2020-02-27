@@ -1,0 +1,58 @@
+# Move to home directory
+cd
+mkdir ag_dockermachine
+cd ag_dockermachine
+curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine && \
+chmod +x /tmp/docker-machine && \
+sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+
+docker-machine version 
+
+# Create my docker machine using vmbox
+
+# Install VirtualBox
+sudo apt-get install virtualbox
+
+MACHINE_NAME="agm1"
+sudo docker-machine create --driver virtualbox ${MACHINE_NAME}
+
+
+# Create my generic docker machine
+#### Warning make sure to open the ports on the remote machine using below commands: ###############
+# For more details refer - https://ypereirareis.github.io/blog/2016/05/12/docker-machine-generic-driver-devicemapper/
+iptables -t filter -A INPUT -p tcp --dport 2376 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 2376 -j ACCEPT
+iptables -t filter -A INPUT -p tcp --dport 2377 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 2377 -j ACCEPT
+
+# Below commands are to be executed on local machine
+MACHINE_IP="164.52.193.223"
+MACHINE_NAME="agm2"
+SSH_USER="root"
+SSH_PUBLIC_KEY=~/.ssh/id_rsa		# If you did an ssh-copy-id to the machine: ~/.ssh/id_rsa
+docker-machine create --driver generic --generic-ip-address=${MACHINE_IP} --generic-ssh-key ${SSH_PUBLIC_KEY} --generic-ssh-user ${SSH_USER} ${MACHINE_NAME}
+
+docker-machine ls
+
+## SSH into docker machine
+docker-machine ssh agm2
+
+# Activate/switch to docker machine
+eval $(docker-machine env agm2)
+
+# Which machine is active
+docker-machine active
+
+# switch back to local environment
+eval $(docker-machine env -u)
+
+
+# restart docker machine
+docker-machine restart agm2
+
+# remove docker machine
+docker-machine rm agm2
+
+
+
+

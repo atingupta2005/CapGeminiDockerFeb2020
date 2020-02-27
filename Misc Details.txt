@@ -1,0 +1,36 @@
+IP : 164.52.195.167
+Y1sb@73en
+
+164.52.193.223
+V2zm@kqr6
+
+ssh-copy-id root@164.52.192.252
+ssh-copy-id root@164.52.192.6
+Customer Network
+How to connect two different between 2 different networks
+
+Docker Compose Good Resources:
+https://www.baeldung.com/docker-compose
+
+
+
+How to attach a volume to running container
+
+How to know which container is used to server request from swarm
+
+How to stop container from central place in swarm
+
+How to promote the docker node to manager
+
+Reachable status is?
+
+What is overlay network?
+
+
+Do's and dots for best practices
+
+
+Security Guidelines of Github
+
+How to connect existing container to the pod which is being created?
+

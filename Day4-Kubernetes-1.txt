@@ -1,0 +1,106 @@
+mkdir deployment-demo && cd deployment-demo
+
+vi namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: deployment-demo
+  labels:
+    apps: web-based
+  annotations:
+    type: demo
+
+	
+kubectl create -f namespace.yaml
+
+
+# Assign Resource Quota To Namespace
+vi resourceQuota.yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-quota
+  namespace: deployment-demo
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+	
+kubectl create -f resourceQuota.yaml
+
+# Now, let’s describe the namespace to check if the resource quota has been applied to the deployment-demo namespace.
+kubectl describe ns deployment-demo
+
+
+# Create a Deployment
+vi deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+  namespace: deployment-demo
+  annotations:
+    monitoring: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+          requests: 
+            memory: "1Gi"
+            cpu: "500m"
+			
+
+kubectl create -f deployment.yaml
+
+
+kubectl get deployments -n deployment-demo
+
+
+# Create a Service and Expose The Deployment
+# Now that we have a running deployment, we will create a Kubernetes service of type NodePort ( 30500) 
+# pointing to the nginx deployment. Using NodePort you will be able to access the Nginx service on all 
+# the kubernetes node on port 30500.
+
+vi service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: deployment-demo
+spec:
+  ports:
+  - nodePort: 30500
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+  type: NodePort
+  
+
+	
+kubectl create -f service.yaml
+
+kubectl get services  -n deployment-demo
+

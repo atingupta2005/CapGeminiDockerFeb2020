@@ -1,0 +1,65 @@
+https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+
+
+application/php-apaapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  selector:
+    matchLabels:
+      run: php-apache
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: k8s.gcr.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  labels:
+    run: php-apache
+spec:
+  ports:
+  - port: 80
+  selector:
+    run: php-apache
+
+
+kubectl apply -f https://k8s.io/examples/application/php-apache.yaml
+
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+
+kubectl get hpa
+
+kubectl run --generator=run-pod/v1 -it --rm load-generator --image=busybox /bin/sh
+
+Hit enter for command prompt
+
+while true; do wget -q -O- http://php-apache.default.svc.cluster.local; done
+
+kubectl get hpa
+
+kubectl get deployment php-apache
+
+ubectl get hpa
+
+kubectl get deployment php-apache
+
+kubectl get hpa.v2beta2.autoscaling -o yaml > /tmp/hpa-v2.yaml
+

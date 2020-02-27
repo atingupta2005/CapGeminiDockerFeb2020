@@ -1,0 +1,99 @@
+kubectl version
+
+#How to Create Kubernetes Deployments
+nano deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-tutorial-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kubernetes-tutorial-deployment
+  template:
+    metadata:
+      labels:
+        app: kubernetes-tutorial-deployment
+    spec:
+      containers:
+      - name: kubernetes-tutorial-application
+        image: auth0blog/kubernetes-tutorial
+        ports:
+          - containerPort: 3000
+		  
+
+
+
+kubectl apply -f deployment.yaml
+
+kubectl get pods
+
+
+# To consume your deployment, you will need to create ingress rules that expose your deployment to the external world. 
+# Kubernetes Ingress is a resource to add rules for routing traffic from external sources 
+# to the services in the kubernetes cluster
+
+# To configure ingress rules in your Kubernetes cluster, first, you will need an ingress controller. 
+# We will create NGINX ingress controller.
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+
+
+#To confirm that the above commands worked, you can issue the following command:
+kubectl get pods -n ingress-nginx
+
+# Having configured the ingress controller in your cluster, the next thing you will do is to create a service
+
+vi service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-tutorial-cluster-ip
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: kubernetes-tutorial-deployment
+  type: ClusterIP
+
+kubectl apply -f service.yaml
+
+
+# There are many different types of services available on Kubernetes. 
+ClusterIP, the type you are using, helps you expose your deployments inside the cluster only. 
+That is, this kind of service does not expose deployments to the outside world
+
+# After you define a service for your pods, you will be able to create ingress rules that point to this service
+
+
+# After creating your service, you can finally define an ingress (and some rules) to expose 
+# this service (and the deployment that it represents) to the outside world
+
+vi ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubernetes-tutorial-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubernetes-tutorial-cluster-ip
+          servicePort: 80
+      - path: /app
+        backend:
+          serviceName: kubernetes-tutorial-cluster-ip-app
+          servicePort: 81
+
+kubectl apply -f ingress.yaml
+
+# To grab the public IP address of your Kubernetes cluster, you can issue the following command:
+kubectl get svc \
+  -n ingress-nginx ingress-nginx \
+  -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'
+  

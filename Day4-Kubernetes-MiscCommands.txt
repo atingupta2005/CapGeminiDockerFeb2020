@@ -1,0 +1,27 @@
+kubectl get pods
+kubectl get services,deployments
+kubectl get deployment myfirstk8sapp
+kubectl get all
+kubectl get ns
+
+# To delete services and deployments labeled with app=niceone
+kubectl delete svc,deploy -l app=niceone
+
+#To force deletion of a pod:
+kubectl delete pod hangingpod --grace-period=0 --force
+
+# To delete all pods in the namespace test, do:
+kubectl delete pods --all --namespace test
+
+kubectl get pods --watch
+watch kubectl get pods
+
+
+# Creating and Modifying Fundamental Workloads
+# To create a deployment that runs the Ghost microblogging platform do the following
+kubectl run ghost --image=ghost:0.9
+kubectl get deploy/ghost
+
+# To launch Ghost serving on port 2368 and create a service along with it, enter:
+kubectl run ghost --image=ghost:0.9 --port=2368 --expose
+

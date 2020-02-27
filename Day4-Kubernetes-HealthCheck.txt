@@ -1,0 +1,100 @@
+nano sampleliveness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-exec
+spec:
+  containers:
+  - name: liveness
+    image: k8s.gcr.io/busybox
+    args:
+    - /bin/sh
+    - -c
+    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+	  
+
+kubectl apply -f https://k8s.io/examples/pods/probe/exec-liveness.yaml
+
+kubectl describe pod liveness-exec
+
+kubectl describe pod liveness-exec
+
+kubectl get pod liveness-exec
+
+
+
+--------------------------------
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: node500
+spec:
+ containers:
+   - image: magalix/node500
+     name: node500
+     ports:
+       - containerPort: 3000
+         protocol: TCP
+     livenessProbe:
+       httpGet:
+         path: /
+         port: 3000
+       initialDelaySeconds: 5
+	   
+kubectl apply -f pod.yaml
+kubectl describe pods node500
+
+-----------------
+Just for reference:
+
+app.js
+var http = require('http');
+
+var server = http.createServer(function(req, res) {
+	res.writeHead(500, { "Content-type": "text/plain" });
+	res.end("We have run into an error\n");
+});
+
+server.listen(3000, function() {
+	console.log('Server is running at 3000')
+})
+
+Dockerfile
+FROM node
+COPY app.js /
+EXPOSE 3000
+ENTRYPOINT [ "node","/app.js" ]
+
+
+
+Readiness:
+apiVersion: v1
+kind: Pod
+metadata:
+ name: nodedelayed
+spec:
+ containers:
+   - image: afakharany/node_delayed
+     name: nodedelayed
+     ports:
+       - containerPort: 3000
+         protocol: TCP
+     readinessProbe:
+       httpGet:
+         path: /
+         port: 3000
+       timeoutSeconds: 2
+	   
+kubectl apply -f pod.yaml
+kubectl describe pods nodedelayed
+

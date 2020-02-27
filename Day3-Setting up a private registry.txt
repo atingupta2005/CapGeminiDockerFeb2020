@@ -1,0 +1,27 @@
+# Setting up a private registry
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker ps
+
+# Push a custom Docker image to a remote private registry
+docker tag hello-world 164.52.195.167:5000/hello-world # Replace with your IP/domain
+
+docker images
+
+
+# Do changes as below and then restart the docker service
+	vim /etc/docker/daemon.json
+	{
+		"insecure-registries" : ["164.52.195.167:5000"]
+	}
+	
+sudo service docker restart
+
+
+docker push 164.52.195.167:5000/hello-world
+
+# In order to make sure of that, we can ask this remote registry what images it contains. 
+# The registry also offers a web API to query stored images.
+curl -X GET http://164.52.195.167:5000/v2/_catalog
+
+docker pull 164.52.195.167:5000/hello-world

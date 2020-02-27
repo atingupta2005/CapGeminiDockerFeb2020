@@ -1,0 +1,9 @@
+# Scaling
+
+kubectl get deploy fancyapp
+kubectl scale deployment fancyapp --replicas=3
+
+kubectl get deploy fancyapp
+
+
+

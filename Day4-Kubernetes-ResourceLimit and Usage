@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo
+spec:
+  containers:
+  - name: demo1
+  image: demo/demo1
+  resources:
+    requests:
+      memory: "16Mi"
+      cpu: "100m"
+    limits:
+      memory: "32Mi"
+      cpu: "200m"
+  - name: demo2
+  image: demo/demo2
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "200m"
+      limits:
+        memory: "128Mi"
+        cpu: "400m"
+
+kubectl apply -f demo.yaml --namespace=demo-example 
+
+kubectl get nodes --no-headers | awk '{print $1}' | xargs -I {} sh -c 'echo {}; kubectl describe node {} | grep Alloc
+
+kubectl top pod --all-namespaces
+

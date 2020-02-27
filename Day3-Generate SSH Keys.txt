@@ -1,0 +1,28 @@
+####################### On Machine 1 #################################
+ls -l ~/.ssh/id_*.pub
+ssh-keygen -t rsa -b 4096 -C "atingupta2005@gmail.com"
+ls ~/.ssh/id_*
+
+# Now that you generated your SSH key pair, the next step is to copy the public key to the server you want to manage.
+ssh-copy-id root@164.52.195.167
+
+#Once the user is authenticated, the public key ~/.ssh/id_rsa.pub will be appended to the remote user ~/.ssh/authorized_keys file and connection will be closed
+
+#Login to your server using SSH keys
+ssh root@164.52.195.167
+
+
+
+####################### On Machine 2 - Optional #################################
+ls -l ~/.ssh/id_*.pub
+ssh-keygen -t rsa -b 4096 -C "atingupta2005@gmail.com"
+ls ~/.ssh/id_*
+
+# Now that you generated your SSH key pair, the next step is to copy the public key to the server you want to manage.
+ssh-copy-id root@164.52.193.223
+
+#Once the user is authenticated, the public key ~/.ssh/id_rsa.pub will be appended to the remote user ~/.ssh/authorized_keys file and connection will be closed
+
+#Login to your server using SSH keys
+ssh root@164.52.193.223
+

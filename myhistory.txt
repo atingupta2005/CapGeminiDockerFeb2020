@@ -1,0 +1,296 @@
+    1  sudo ls
+    2  sudo netstat -tulpn | grep :80
+    3  exit
+    4  ls
+    5  cd docker_file
+    6  cd docker_files
+    7  cd ..
+    8  ls
+    9  cd ..
+   10  ls
+   11  pwd
+   12  cd home/
+   13  ls
+   14  cd u1
+   15  ls
+   16  cd docker_files/
+   17  ls
+   18  cd node_npm/
+   19  ls
+   20  cat package.json
+   21  exit
+   22  docker container stop my_nginx
+   23  docker rm my_nginx
+   24  docker ps -a
+   25  docker network ls
+   26  docker network inspect host
+   27  docker network create –-driver host h_n
+   28  ls
+   29  mkdir docker_files
+   30  cd docker_files/
+   31  mkdir node_npm
+   32  cd node_npm/
+   33  vim Dockerfile
+   34  docker build -t 'any image name' .
+   35  docker build -t myImage  .
+   36  docker build -t myimage  .
+   37  docker images
+   38  docker run -p 8080:8080 myimage
+   39  docker images
+   40  vim Dockerfile
+   41  ls
+   42  vim package.json
+   43  docker build -t myimage  .
+   44  docker images
+   45  docker run -p 8234:8234 myimage
+   46  cd
+   47  docker top
+   48  docker ps
+   49  docker ps -a
+   50  docker container start 3a
+   51  docker top 3a
+   52  docker ps 3a
+   53  docker free  3a
+   54  docker ps 3a
+   55  docker stats 3a
+   56  docker inspect 3a
+   57  docker ps -q | xargs  docker stats --no-stream
+   58  docker ps -q
+   59  docker ps -q | xargs  docker stats --no-stream
+   60  docker ps -q | xargs  docker stats
+   61  docker stats --all
+   62  docker container run -d --memory-reservation=250m --name mymem1 alpine:3.8 sleep 3600
+   63  docker ps
+   64  docker images
+   65  docker save –output testbox.tar hello-world alpine
+   66  docker save -output testbox.tar hello-world alpine
+   67  docker save –-output testbox.tar hello-world alpine
+   68  docker save –o testbox.tar hello-world alpine
+   69  docker save –o testbox.tar hello-world
+   70  docker save –-output testbox.tar hello-world
+   71  docker save -output testbox.tar hello-world
+   72  docker save alpine > busybox.tar
+   73  docker save --output busybox.tar alpine
+   74  docker system df
+   75  docker system events
+   76  docker system info
+   77  docker version
+   78  docker container logs
+   79  docker ps
+   80  docker container logs 464
+   81  docker container kill 464
+   82  docker ps
+   83  docker attach 3a
+   84  docker network create mynetwork
+   85  docker run --name u-python -p 8080:8080 -p 3286:3286 -d --network mynetwork ubuntu
+   86  docker run --name u-sql -p 8081:8081 -p 3287:3287 -d --network mynetwork ubuntu
+   87  docker attach 9567
+   88  docker
+   89  docker ps
+   90  docker ps -a
+   91  docker rm 0c66
+   92  docker rm 9567
+   93  docker rm 464
+   94  docker rm ad6
+   95  docker rm 51a
+   96  docker rm 3a56
+   97  docker ps -a
+   98  docker run -it  --name u-python -p 8080:8080 -p 3286:3286 -d --network mynetwork ubuntu /bin/bash
+   99  docker attach b911
+  100  docker run -it  --name u-sql -p 8081:8081 -p 3287:3287 -d --network mynetwork ubuntu /bin/bash
+  101  docker attach b911
+  102  docker ps
+  103  docker attach 5c24
+  104  ls
+  105  ps
+  106  su 40
+  107  su u40
+  108  su u31
+  109  su 3
+  110  su u33
+  111  su u34
+  112  su u31
+  113  echo u31:p | /usr/sbin/chpasswd
+  114  echo u32:p | /usr/sbin/chpasswd
+  115  su u31
+  116  passwd u31
+  117  su u31
+  118  su u90
+  119  apt install curl
+  120  sudo apt install curl
+  121  curl google.com
+  122  su u35
+  123  su u33
+  124  usermod -aG sudo u33
+  125  sudo usermod -aG sudo u33
+  126  su u33
+  127  su u42
+  128  su u35
+  129  docker network ls
+  130  docker run -dit --name alpine1 alpine ash
+  131  docker run -dit --name alpine2 alpine ash
+  132  docker network inspect bridge
+  133  docker attach alpine1
+  134  Docker stop alpine1; docker rm alpine1
+  135  Docker stop alpine2; docker rm alpine2
+  136  docker run -dit --name alpine1 --network alpine-net alpine ash
+  137  docker stop alpine1; docker rm alpine1docker run -dit --name alpine1 --network alpine-net alpine ash
+  138  docker stop alpine1; docker rm alpine1
+  139  docker stop alpine2; docker rm alpine2
+  140  clear
+  141  docker network create --driver bridge alpine-net
+  142  docker network ls
+  143  docker network inspect alpine-net
+  144  docker run -dit --name alpine1 --network alpine-net alpine ash
+  145  docker network inspect alpine-net
+  146  docker run -dit --name alpine2 --network alpine-net alpine ash
+  147  docker network inspect alpine-net
+  148  docker run -dit --name alpine3 alpine ash
+  149  docker run -dit --name alpine4 --network alpine-net alpine ash
+  150  docker network connect bridge alpine4
+  151  docker container ls
+  152  docker network inspect bridge
+  153  docker network inspect alpine-net
+  154  docker network create --driver bridge u1-alpine-net
+  155  docker network ls
+  156  docker network inspect u1-alpine-net
+  157  docker run -dit --name u1-alpine1 --network u1-alpine-net alpine ash
+  158  docker run -dit --name u1-alpine2 --network alpine-net alpine ash
+  159  docker run -dit --name u1-alpine3 alpine ash# Will be connected to bridge
+  160  docker run -dit --name u1-alpine4 --network u1-alpine-net alpine ash
+  161  docker network inspect u1-alpine-net
+  162  docker network connect bridge u1-alpine4
+  163  docker network inspect bridge
+  164  docker network connect u1-alpine-net  u1-alpine4
+  165  docker network connect mynetwork u1-alpine4
+  166  docker network inspect mynetwork
+  167  docker network inspect bridge
+  168  docker system prune
+  169  rm $(docker ps -a -q)
+  170  docker ps
+  171  docker container stop $(docker container ls -aq)
+  172  docker system prune
+  173  ls
+  174  docker ps
+  175  docker network
+  176  docker network ls
+  177  docker ps -a
+  178  docker ntwork ls
+  179  docker network ls
+  180  docker network inspect brige
+  181  docker network inspect bridge
+  182  docker network inspect bridge | grep sandhya
+  183  docker network inspect bridge | grep san
+  184  docker network inspect bridge | grep s
+  185  docker network inspect bridge | grep alpine
+  186  docker network inspect bridge | grep sandhyacontainer4
+  187  docker network connect bridge sandhyacontainer4
+  188  docker network inspect bridge | grep sandhyacontainer4
+  189  docker network inspect bridge | grep sandhyacontainer
+  190  docker network inspect bridge | grep sandhyacontai
+  191  docker network inspect bridge | grep sandhyacontaisss
+  192  docker network connect bridge sandhyacontain
+  193  docker network connect bridge sandhyacontainer4
+  194  docker ps
+  195  docker ps | grep sandhya
+  196  docker ps | grep san
+  197  docker ps -a | grep san
+  198  help docker ps
+  199  docker
+  200  docker ps --help
+  201  docker ps --filter "status=exited"
+  202  docker ps --filter "label=color"
+  203  docker network ls
+  204  docker run --rm -d --network host --name my_nginx nginx
+  205  docker network inspect host | grep nginx
+  206  docker network inspect host
+  207  /nginx
+  208  docker network inspect host
+  209  curl localhost:80
+  210  docker ps
+  211  docker container stop a0a8a28cce43
+  212  docker ps
+  213  docker ps -a
+  214  docker ps -a | a0a8a28cce43
+  215  docker ps -a | grep a0a8a28cce43
+  216  cat /etc/resolv.conf
+  217  cat /etc/host
+  218  cat /etc/hosts
+  219  ls
+  220  cd docker_files/
+  221  s
+  222  ls
+  223  cd node_npm/
+  224  ls
+  225  vim Dockerfile
+  226  docker build -t ag_image .
+  227  docker images | grep ag
+  228  docker images | grep
+  229  docker images | grep ag_image
+  230  docker build -t ag_image2 .
+  231  docker images | grep ag_image
+  232  docker images | grep 8297de5a91c4
+  233  vim Dockerfile
+  234  vim package.json
+  235  vim Dockerfile
+  236  docker run -d -p 5000:5000 --restart always --name registry registry:2
+  237  docker ps
+  238  docker ps | registry
+  239  docker ps | grep registry
+  240  docker container stop 2aa
+  241  docker container stop d2b
+  242  docker container rm $(docker ps -a -q)
+  243  docker ps | grep registry
+  244  docker container stop cbf
+  245  docker container rm $(docker ps -a -q)
+  246  docker ps | grep registry
+  247  docker run -d -p 5000:5000 --restart always --name registry registry:2
+  248  docker system df -v
+  249  docker volume ls
+  250  docker volume inspect sanvol
+  251  cd /var/lib/docker/volumes/sanvol/_data
+  252  sudo cd /var/lib/docker/volumes/sanvol/_data
+  253  sudo su
+  254  ls
+  255  pwd
+  256  sudo su
+  257  docker volume create ag-my-vol-10
+  258  sudo su
+  259  docker volume ls
+  260  docker volume ls --help
+  261  docker ps
+  262  docker attach 560
+  263  docker attach f60
+  264  docker ps | grep ag
+  265  docker ps | grep ag-
+  266  docker attach 7ca
+  267  ip addr show
+  268  docker ps | grep ag-
+  269  docker ps -a | grep ag-
+  270  docker container start 7ca0821041ad
+  271  docker container inspect 7ca
+  272  ping 172.17.0.6
+  273  ssh cu1@172.17.0.6
+  274  ssh cu1@172.17.0.6:22
+  275  docker attach 7ca
+  276  docker container start 7ca
+  277  docker attach 7ca
+  278  docker container inspect 7ca
+  279  docker container inspect 7ca | more
+  280  docker attach 7ca
+  281  ping 172.17.0.6
+  282  ssh cu1@172.17.0.6
+  283  docker attach 7ca
+  284  ssh cu1@172.17.0.6
+  285  docker ps -a | grep ag-
+  286  docker container start a6
+  287  docker attach a6
+  288  docker container start a6
+  289  docker attach a6
+  290  docker ps | grep ubuntu
+  291  docker attach u13-devtest13
+  292  history | grep run
+  293  docker run -it  --name ag-mysshportpc -p 23:22 -d  ubuntu /bin/bash
+  294  docker attach ee
+  295  docker container inspect ee
+  296  ssh ssh_u1@172.17.0.24
