@@ -1,21 +1,23 @@
 
-How to attach a volume to running container
+How to attach a volume to running container?
+  - We can't normally. There are some hacks to acheive this but any command is not provided natively by Docker.
 
 How to know which container is used to serve request from swarm
 
-How to stop container from central place in swarm
-
-How to promote the docker node to manager
+How to promote the docker node to manager?
+  - Refer - https://docs.docker.com/engine/reference/commandline/node_promote/
 
 Reachable status is?
-
+ - Reachable means the node is a manager node participating in the Raft consensus quorum. If the leader node becomes unavailable, the node is eligible for election as the new leader. Refer - https://docs.docker.com/engine/swarm/manage-nodes/
+ 
 What is overlay network?
-
-
-Do's and dots for best practices
-
+ - Refer - https://neuvector.com/network-security/docker-swarm-container-networking/
 
 Security Guidelines of Github
+ - Refer - https://snyk.io/blog/ten-git-hub-security-best-practices/
 
 How to connect existing container to the pod which is being created?
 
+Containers are stopped if the host machine is restarted?
+  - Depends on the restart policy. Refer - https://docs.docker.com/config/containers/start-containers-automatically/
+  
