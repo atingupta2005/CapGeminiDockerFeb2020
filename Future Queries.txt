@@ -22,3 +22,7 @@ Containers are stopped if the host machine is restarted?
   - Depends on the restart policy. Refer - https://docs.docker.com/config/containers/start-containers-automatically/
   
 Kubernetes uses the etcd key-value store for its control plane (Master) database, and Docker Swarm Managers use a built-in data store that is similar to etcd. Both use the Raft Algorithm to communicate between these control plane nodes safely and make decisions about state.
+
+How to enable Port Forwarding for Docker Container through IPTables and publish port after starting the container
+ - http://www.geekpills.com/operating-system/linux/port-forwarding-for-docker-container-through-iptables
+
